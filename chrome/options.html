@@ -10,6 +10,7 @@
 		<script src="js/sha1.js"></script>
 		<script src="js/dropbox.js"></script>
 		<script src="js/settings.js"></script>
+		<script src="js/sync.js"></script>
 		<script>
 			function get_token() {
 
@@ -37,6 +38,11 @@
 				settings.set_value("access_token", "");
 				settings.set_value("access_token_secret", "");
 				switch_form("disconnected");
+			}
+			
+			function sync_now() {
+				sync.setup(dropbox);
+				sync.go();
 			}
 			
 			function switch_form(status) {
@@ -135,7 +141,7 @@
 								<p>Last sync: <span id="last_sync_date"><span></p>
 								<p>&nbsp;</p>
 								<div class="alert-actions">
-									<a href="#" class="btn small">Sync now</a>
+									<a href="#" onclick="sync_now();" class="btn small">Sync now</a>
 								</div>
 							</div>
 						</form>
