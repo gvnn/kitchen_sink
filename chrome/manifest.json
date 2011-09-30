@@ -1,11 +1,14 @@
 {
-  "name": "kitchen_sink",
-  "version": "0.1",
-  "description": "a bookmark sync addon that uses dropbox",
-  "browser_action": {
-    "default_icon": "icon.png"
-  },
-  "permissions": [
-    "bookmarks"
-  ]
+	"name": "kitchen_sink",
+	"version": "0.1",
+	"description": "a bookmark sync addon that uses dropbox",
+	"browser_action": {
+		"default_icon": "icon.png",
+		"popup": "menu.html"
+	},
+	"options_page": "options.html",
+	"permissions": [
+		"bookmarks",
+		"notifications"
+	]
 }
