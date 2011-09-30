@@ -44,6 +44,7 @@
 					case "connected":
 						$("#connected_form").show();
 						$("#connection_form").hide();
+						$("#password").val("");
 						break;
 					case "disconnected":
 						$("#connected_form").hide();
@@ -55,14 +56,17 @@
 			$(document).ready(function() {
 				//check if user aldready set the token
 				_access_token = settings.get_value("access_token", "");
-				_access_token_secret = settings.get_value("access_token_secret", "");
+				_access_token_secret = settings.get_value("access_token_secret", "");			
+				$("#app_key").val(settings.get_value("app_key", ""));
+				$("#app_secret").val(settings.get_value("app_secret", ""));
+				$("#email").val(settings.get_value("email", ""));
 				if(_access_token == "" || _access_token_secret == "" ) {
-					switch_form("disconnected");				
-					$("#app_key").val(settings.get_value("app_key", ""));
-					$("#app_secret").val(settings.get_value("app_secret", ""));
-					$("#email").val(settings.get_value("email", ""));
+					switch_form("disconnected");	
 				} else {
 					switch_form("connected");
+					dropbox.setup(app_key, app_secret);
+					dropbox.set_accessTokenSecret(_access_token_secret);
+					dropbox.set_accessToken(_access_token);
 				}
 			});
 		</script>

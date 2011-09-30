@@ -12,6 +12,14 @@ var dropbox = {
   accessTokenSecret : function() {
 	return this._accessTokenSecret;
   },
+  
+  set_accessTokenSecret : function(value) {
+	this._accessTokenSecret = value;
+  },
+  
+  set_accessToken : function(value) {
+	this._accessToken = value;
+  },
 
   authenticate: function(email, password, callback) {
     var that = this;
