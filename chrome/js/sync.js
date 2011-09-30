@@ -7,7 +7,7 @@ var sync = {
   go: function() {
 	this._notification = webkitNotifications.createNotification(
 		'gui/img/icon.png',
-		'kitchan_sync',
+		'kitchen_sync',
 		'Sync started'
 	);
 	this._notification.show();
