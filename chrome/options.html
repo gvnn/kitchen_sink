@@ -60,6 +60,16 @@
 				$("#app_key").val(settings.get_value("app_key", ""));
 				$("#app_secret").val(settings.get_value("app_secret", ""));
 				$("#email").val(settings.get_value("email", ""));
+				
+				_last_sync = settings.get_value("last_sync_date", "");
+				if(_last_sync != "") {
+					$("#sync_container").addClass("info");
+					$("#last_sync_date").text(_last_sync);
+				} else {
+					$("#sync_container").addClass("warning");
+					$("#last_sync_date").text("no date found");
+				}
+				
 				if(_access_token == "" || _access_token_secret == "" ) {
 					switch_form("disconnected");	
 				} else {
@@ -78,7 +88,7 @@
 					<h1>kitchen_sink <small>options</small></h1>
 				</div>
 				<div class="row">
-					<div class="span10">
+					<div class="span14">
 						<h3>Dropbox Settings</h3>
 						<form id="connection_form">
 							<fieldset>
@@ -113,23 +123,27 @@
 							</div>
 						</form>
 						<form id="connected_form">
-							<p>&nbsp;</p>
 							<div class="alert-message block-message success">
-								<p>Your account is already connected with Dropbox.</p>
+								<p>Your account is connected with Dropbox.</p>
 								<p>&nbsp;</p>
 								<div class="alert-actions">
 									<a class="btn small" href="#" onclick="remove_token();">Remove connection</a>
 								</div>
 							</div>
+							<h3>Sync</h3>						
+							<div id="sync_container" class="alert-message block-message">
+								<p>Last sync: <span id="last_sync_date"><span></p>
+								<p>&nbsp;</p>
+								<div class="alert-actions">
+									<a href="#" class="btn small">Sync now</a>
+								</div>
+							</div>
 						</form>
-					</div>
-					<div class="span4">
-						<h3>Secondary content</h3>
 					</div>
 				</div>
 			</div>
 			<footer>
-				<p>Code by <a target="_blank" href="http://www.gvnn.it">Gvnn</a> - Design <a href="http://twitter.github.com/bootstrap" target="_blank">Bootstrap, from Twitter</a></p>
+				<p>Code by <a target="_blank" href="http://www.gvnn.it">Gvnn</a> - kitchen_sink on <a target="_blank" href="https://github.com/gvnn/kitchen_sink">GitHub</a></p>
 			</footer>
 		</div>
 	</body>
