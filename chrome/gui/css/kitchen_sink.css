@@ -41,9 +41,4 @@ min-height: 500px;
 .content .span4 {
 margin-left: 0;
 padding-left: 19px;
-border-left: 1px solid #eee;
-}
-
-.actions {
-	margin-right: 20px;
 }

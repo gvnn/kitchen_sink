@@ -5,6 +5,67 @@
 		<title>kitchen_sink options</title>
 		<link rel="stylesheet" type="text/css" href="gui/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="gui/css/kitchen_sink.css">
+		<script src="js/jquery-1.6.4.min.js"></script>
+		<script src="js/oauth.js"></script>
+		<script src="js/sha1.js"></script>
+		<script src="js/dropbox.js"></script>
+		<script src="js/settings.js"></script>
+		<script>
+			function get_token() {
+
+				var app_key = $("#app_key").val(),
+					app_secret = $("#app_secret").val(),
+					email = $("#email").val(),
+					password = $("#password").val();
+				
+				settings.set_value("app_key", app_key);
+				settings.set_value("app_secret", app_secret);
+				settings.set_value("email", email);
+				
+				dropbox.setup(app_key, app_secret);
+				dropbox.authenticate(email, password, function() {
+					if(dropbox.accessToken() != "" &&  dropbox.accessTokenSecret() != "") {
+						//saves the token
+						settings.set_value("access_token", dropbox.accessToken());
+						settings.set_value("access_token_secret", dropbox.accessTokenSecret());
+						switch_form("connected");
+					}
+				});
+			}
+			
+			function remove_token() {
+				settings.set_value("access_token", "");
+				settings.set_value("access_token_secret", "");
+				switch_form("disconnected");
+			}
+			
+			function switch_form(status) {
+				switch(status) {
+					case "connected":
+						$("#connected_form").show();
+						$("#connection_form").hide();
+						break;
+					case "disconnected":
+						$("#connected_form").hide();
+						$("#connection_form").show();
+						break;
+				}
+			}
+			
+			$(document).ready(function() {
+				//check if user aldready set the token
+				_access_token = settings.get_value("access_token", "");
+				_access_token_secret = settings.get_value("access_token_secret", "");
+				if(_access_token == "" || _access_token_secret == "" ) {
+					switch_form("disconnected");				
+					$("#app_key").val(settings.get_value("app_key", ""));
+					$("#app_secret").val(settings.get_value("app_secret", ""));
+					$("#email").val(settings.get_value("email", ""));
+				} else {
+					switch_form("connected");
+				}
+			});
+		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -14,18 +75,47 @@
 				</div>
 				<div class="row">
 					<div class="span10">
-						<h2>Dropbox Settings</h2>
-						<form>
+						<h3>Dropbox Settings</h3>
+						<form id="connection_form">
 							<fieldset>
 								<div class="clearfix">
-									<label for="xlInput">X-Large input</label>
+									<label for="app_key">App key</label>
 									<div class="input">
-										<input class="xlarge" id="xlInput" name="xlInput" size="30" type="text">
+										<input class="xlarge" id="app_key" name="app_key" size="30" type="text">
+									</div>
+								</div>
+								<div class="clearfix">
+									<label for="app_secret">App secret</label>
+									<div class="input">
+										<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
+									</div>
+								</div>
+								<div class="clearfix">
+									<label for="email">Email</label>
+									<div class="input">
+										<input class="xlarge" id="email" name="email" size="30" type="text">
+									</div>
+								</div>
+								<div class="clearfix">
+									<label for="password">Password</label>
+									<div class="input">
+										<input class="xlarge" id="password" name="password" size="30" type="password">
+										(not saved)
 									</div>
 								</div>
 							</fieldset>
 							<div class="actions">
-								<input type="submit" class="btn primary" value="Save changes">&nbsp;<button type="reset" class="btn">Cancel</button>
+								<input type="button" onclick="get_token()" class="btn primary" value="Get token">
+							</div>
+						</form>
+						<form id="connected_form">
+							<p>&nbsp;</p>
+							<div class="alert-message block-message success">
+								<p>Your account is already connected with Dropbox.</p>
+								<p>&nbsp;</p>
+								<div class="alert-actions">
+									<a class="btn small" href="#" onclick="remove_token();">Remove connection</a>
+								</div>
 							</div>
 						</form>
 					</div>

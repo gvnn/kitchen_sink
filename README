@@ -8,3 +8,7 @@ credits:
 
 - Bootstrap (v 1.3), toolkit from twitter (http://twitter.github.com/bootstrap)
 - gcons from greepit (http://www.greepit.com/open-source-icons-gcons/)
+- jQuery (http://jquery.com/)
+- JavaScript OAuth library by John Kristian (http://code.google.com/p/oauth/)
+- SHA1.js by Paul Johnston (http://pajhome.org.uk/crypt/md5/)
+- dropbox-js by Ben Cherry (https://github.com/bcherry/dropbox-js)
