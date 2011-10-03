@@ -63,28 +63,7 @@ var dropbox = {
 	},
 	
 	sendFile : function(file_name, fileEntry, blob) {	
-		//start reading the file
-		/*fileEntry.file(function(file) {
-			var reader = new FileReader();
-			reader.onloadend = function(e) {
-				console.log("file loaded");
-				dropbox._request("/files/dropbox/" + file_name, {
-					method : "BLOB",
-					subdomain : 'api-content',
-					success: function(data) {
-						console.log("sendBlob ", data);
-					},
-					error: function() {
-						console.log("sendBlob error", arguments);
-					}
-					}, {
-						file_name : file_name,
-						body : this.result 
-					}
-				);
-			};
-			reader.readAsText(file);
-		}, sync._fs_error_handler);*/
+		
 		
 		dropbox._request("/files/dropbox/kitchen_sink", {
 					method : "POST",
@@ -157,24 +136,7 @@ var dropbox = {
 		
 		if(params.type == "file") {
 		
-			/*simple = new ChromeExOAuth(
-					"",
-					"",
-					"",
-					this._consumerKey,
-					this._consumerSecret,
-					"", {}
-				  );	
-			simple.setToken(this._accessToken);
-			simple.setTokenSecret(this._accessTokenSecret);*/
-			//this._uploadFile(url, data.file_name, data.body, simple);
-			//$.extend(message.parameters, data);
-
 			
-			// oparam = 
-			// for(var p in oparam) {
-				// formdata.append(p, oparam[p]);
-			// }
 			
 			_query_string = this._stringify(OAuth.getParameterMap(message.parameters));
 			
@@ -196,46 +158,5 @@ var dropbox = {
 				error: params.error
 			});
 		}
-	},
-			
-	_uploadFile : function ( url, filename, fileData, oauth_obj) {
-		/*var boundaryString = "AaBbCcX30";
-		var boundary = "--"+boundaryString;
-		
-		var postContent = "";
-		params = oauth_obj.signParam(url, "POST", { });
-		for(var key in params) {
-			postContent += boundary+"\r\n"+
-							"Content-Disposition: form-data; name=\""+ key +"\";\r\n"+
-							"\r\n"+
-							params[key] + "\r\n";
-		}
-		
-		postContent += boundary+"\r\n"+
-			  "Content-Disposition: form-data; name=\"file\"; filename=\""+ filename +"\"\r\n"+
-			  "Content-Type: text/plain\r\n"+
-			  "\r\n"+
-			  "%FILECONTENT%\r\n"+
-			  boundary+"--\r\n";
-		
-		postContent = postContent.replace("%FILECONTENT%", fileData);
-		console.log( postContent );
-
-		var req = new XMLHttpRequest();
-		req.open("POST", oauth_obj.signURL(url, "POST", { }), true);
-		//req.open("POST", url, true);
-		//req.setRequestHeader('Authorization', oauth_obj.getAuthorizationHeader(url, "POST", {}));
-		req.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + boundary + ";charset=UTF-8");
-		req.send(postContent);*/
-		
-		params = oauth_obj.signParam(url, "POST", { });
-		var formdata = new FormData();
-		for(var key in params) {
-			formdata.append(key, params[key]);
-		}
-		formdata.append("file", fileData);
-		var req = new XMLHttpRequest();
-		req.open("POST", oauth_obj.signURL(url, "POST", { }));
-		req.send(formdata);
 	}
 };
