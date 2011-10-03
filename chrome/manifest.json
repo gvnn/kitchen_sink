@@ -9,6 +9,7 @@
 	"options_page": "options.html",
 	"permissions": [
 		"bookmarks",
-		"notifications"
+		"notifications",
+		"https://api.dropbox.com/*"
 	]
 }

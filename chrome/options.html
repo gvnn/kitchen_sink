@@ -25,6 +25,8 @@
 				
 				dropbox.setup(app_key, app_secret);
 				dropbox.authenticate(email, password, function() {
+					
+					dropbox.getInfo();
 					if(dropbox.accessToken() != "" &&  dropbox.accessTokenSecret() != "") {
 						//saves the token
 						settings.set_value("access_token", dropbox.accessToken());
@@ -41,7 +43,6 @@
 			}
 			
 			function sync_now() {
-				sync.setup(dropbox);
 				sync.go();
 			}
 			
