@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta http-equiv="x-ua-compatible" content="ie=edge" />
-		<link rel="apple-touch-icon" href="https://github.com/gvnn/kitchen_sink/raw/master/dropbox/assets/images/icon.png" />
+		<link rel="apple-touch-icon" href="http://dl.dropbox.com/u/<userid>/assets/images/icon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
 		<link rel="stylesheet" href="assets/css/master.css" />
 		<noscript>
@@ -37,7 +37,7 @@
 		<script src="assets/js/adapt.min.js"></script>
 		<script>
 			$(document).ready(function() {
-				$.getJSON('http://dl.dropbox.com/u/4485884/bookmarks.json', function(jsonp) {
+				$.getJSON('http://dl.dropbox.com/u/<userid>/bookmarks.json', function(jsonp) {
 					for (var i=0; i < jsonp[0].children.length; i++) {
 						//main bookmark folder
 						$("#bookmarks").append($("<div class=\"row\">").attr("id", jsonp[0].children[i].id));
@@ -57,7 +57,7 @@
 					//check if it's a folder
 					if(tree[i].children == undefined) {
 						//simple entry
-						ul.append($("<li>").text(tree[i].title + " - ").append($("<a target=\"_blank\">").text(tree[i].url).attr("href", tree[i].url)));
+						ul.append($("<li>").text(tree[i].title + " - ").append($("<a target=\"_blank\">").text("open").attr("href", tree[i].url)));
 					} else {
 						//folder
 						ul.append($("<li>").html("<strong>" + tree[i].title + "</strong>"));

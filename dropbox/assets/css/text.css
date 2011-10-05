@@ -55,10 +55,11 @@ ol {
 
 ul {
   list-style: disc;
+  padding-left:1em;
 }
 
 li {
-  margin-left: 30px;
+  margin-left: 1em;
 }
 
 p,

@@ -35,6 +35,11 @@ small {
   font-size: 11px;
 }
 
+a.external {
+    background: url('../images/external.png') 100% 60% no-repeat;
+    padding:  0 15px 0 0;
+}
+
 /* `Misc Classes
 ----------------------------------------------------------------------------------------------------*/
 
