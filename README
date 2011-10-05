@@ -1,9 +1,13 @@
 kitchen_sink
-a bookmark sync addon that uses dropbox
+A (very) basic bookmark sync extension on dropbox.
 
-License: Do What The Fuck You Want To Public License, Version 2
+v0.1
+This version includes only an extension for chrome, other browsers will come.
 
-Install on Chrome
+License
+Do What The Fuck You Want To Public License, Version 2.
+
+In Chrome:
 
 	- Bring up the extensions management page by clicking the wrench icon and choosing Tools > Extensions.
 	- If Developer mode has a + by it, click the + to add developer information to the page. 
@@ -13,11 +17,16 @@ Install on Chrome
 	
 	More info at http://code.google.com/chrome/extensions/getstarted.html
 
+On Dropbox:
+
+	- copy the browser.html file in your dropbox folder, you can rename it if you like.
+	- serch for <userid> and replace it with your dropbox id.
+
 Credits:
 
-	- Bootstrap v1.3 (http://twitter.github.com/bootstrap)
-	- gcons from greepit (http://www.greepit.com/open-source-icons-gcons/)
-	- jQuery (http://jquery.com/)
-	- JavaScript OAuth library by John Kristian (http://code.google.com/p/oauth/)
-	- SHA1.js by Paul Johnston (http://pajhome.org.uk/crypt/md5/)
-	- dropbox-js by Ben Cherry (https://github.com/bcherry/dropbox-js)
+	- Bootstrap v1.3 (http://twitter.github.com/bootstrap).
+	- gcons from greepit (http://www.greepit.com/open-source-icons-gcons/).
+	- jQuery (http://jquery.com/).
+	- JavaScript OAuth library by John Kristian (http://code.google.com/p/oauth/).
+	- SHA1.js by Paul Johnston (http://pajhome.org.uk/crypt/md5/).
+	- dropbox-js by Ben Cherry (https://github.com/bcherry/dropbox-js).

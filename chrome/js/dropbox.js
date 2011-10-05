@@ -63,27 +63,25 @@ var dropbox = {
 	},
 	
 	sendFile : function(file_name, fileEntry, blob) {	
-		
-		
-		dropbox._request("/files/dropbox/kitchen_sink", {
-					method : "POST",
-					type : "file",
-					subdomain : 'api-content'}, 
-					{
-						file_name : file_name,
-						body : blob,
-						file : fileEntry
-					}
-				);
+		dropbox._request("/files/dropbox/public", {
+			method : "POST",
+			type : "file",
+			subdomain : 'api-content'}, 
+			{
+				file_name : file_name,
+				body : blob,
+				file : fileEntry
+			}
+		);
 	},
 
 	_stringify : function (parameters) {
-	  var params = [];
-	  for(var p in parameters) {
-		params.push(encodeURIComponent(p) + '=' +
-					encodeURIComponent(parameters[p]));
-	  }
-	  return params.join('&');
+		var params = [];
+		for(var p in parameters) {
+			params.push(encodeURIComponent(p) + '=' +
+			encodeURIComponent(parameters[p]));
+		}
+		return params.join('&');
 	},
 
 	_request: function(path, params, data) {
@@ -135,11 +133,7 @@ var dropbox = {
 		OAuth.SignatureMethod.sign(message, oauthBits);
 		
 		if(params.type == "file") {
-		
-			
-			
 			_query_string = this._stringify(OAuth.getParameterMap(message.parameters));
-			
 			data.file.file(function(return_file){
 				var formdata = new FormData();
 				formdata.append("file", return_file);
@@ -147,7 +141,6 @@ var dropbox = {
 				req.open("POST", url + '?' + _query_string);
 				req.send(formdata);
 			}, sync._fs_error_handler);
-			
 		} else {
 			$.ajax({
 				dataType: "json",
