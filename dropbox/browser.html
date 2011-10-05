@@ -1,20 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="utf-8">
-		<title>kitchen_sink options</title>
-		<link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.3.0/bootstrap.min.css" />
-		<link rel="apple-touch-icon" href="icon.jpg" />
+		<meta charset="utf-8" />
+		<meta http-equiv="x-ua-compatible" content="ie=edge" />
+		<link rel="apple-touch-icon" href="https://github.com/gvnn/kitchen_sink/raw/master/dropbox/assets/images/icon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+		<link rel="stylesheet" href="assets/css/master.css" />
+		<noscript>
+		<link rel="stylesheet" href="assets/css/mobile.min.css" />
+		</noscript>
+		<script>
+		// Edit to suit your needs.
+		var ADAPT_CONFIG = {
+		  // Where is your CSS?
+		  path: 'assets/css/',
+
+		  // false = Only run once, when page first loads.
+		  // true = Change on window resize and page tilt.
+		  dynamic: true,
+
+		  // First range entry is the minimum.
+		  // Last range entry is the maximum.
+		  // Separate ranges by "to" keyword.
+		  range: [
+		    '0px    to 760px  = mobile.min.css',
+		    '760px  to 980px  = 720.min.css',
+		    '980px  to 1280px = 960.min.css',
+		    '1280px to 1600px = 1200.min.css',
+		    '1600px to 1940px = 1560.min.css',
+		    '1940px to 2540px = 1920.min.css',
+		    '2540px           = 2520.min.css'
+		  ]
+		};
+		</script>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		<script src="assets/js/adapt.min.js"></script>
 		<script>
 			$(document).ready(function() {
-				$.getJSON('http://dl.dropbox.com/u/<userid>/bookmarks.json', function(jsonp) {
+				$.getJSON('http://dl.dropbox.com/u/4485884/bookmarks.json', function(jsonp) {
 					for (var i=0; i < jsonp[0].children.length; i++) {
 						//main bookmark folder
 						$("#bookmarks").append($("<div class=\"row\">").attr("id", jsonp[0].children[i].id));
 						container = $("#bookmarks div#" + jsonp[0].children[i].id);
 						//title
-						container.append($("<div class=\"span12\">").append($("<h3>").text(jsonp[0].children[i].title)));
+						container.append($("<div class=\"span12\">").append($("<h4>").text(jsonp[0].children[i].title)));
 						//bookmarks & folders
 						display_tree(container.children(".span12"), jsonp[0].children[i].children);
 					};
@@ -39,11 +68,9 @@
 		</script>
 	</head>
 	<body>
-		<div class="container">
-			<div class="content">
-				<div class="page-header">
-					<h1>kitchen_sink <small>bookmarks</small></h1>
-				</div>
+		<div class="container_12">
+			<div class="grid_12">
+				<h1>kitchen_sink</h1>
 				<div id="bookmarks"></div>
 			</div>
 		</div>
