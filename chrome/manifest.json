@@ -12,6 +12,8 @@
 		"notifications",
 		"unlimitedStorage",
 		"https://api.dropbox.com/*",
-		"https://api-content.dropbox.com/*"
-	]
+		"https://api-content.dropbox.com/*",
+		"http://dl.dropbox.com/*"
+	],
+	"background_page": "background.html"
 }

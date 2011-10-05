@@ -27,8 +27,6 @@
 				
 				dropbox.setup(app_key, app_secret);
 				dropbox.authenticate(email, password, function() {
-					
-					dropbox.getInfo();
 					if(dropbox.accessToken() != "" &&  dropbox.accessTokenSecret() != "") {
 						//saves the token
 						settings.set_value("access_token", dropbox.accessToken());
@@ -44,8 +42,16 @@
 				switch_form("disconnected");
 			}
 			
-			function sync_now() {
-				sync.go();
+			function download_bookmarks() {
+				//replaces bookmarks with dropbox version
+				dropbox.getInfo(function(data) {
+					sync.download(data.uid);
+				});
+			}
+			
+			function upload_bookmarks() {
+				//overwrite bookmarks on dropbox
+				sync.upload();
 			}
 			
 			function switch_form(status) {
@@ -83,7 +89,7 @@
 					switch_form("disconnected");	
 				} else {
 					switch_form("connected");
-					dropbox.setup(app_key, app_secret);
+					dropbox.setup(settings.get_value("app_key", ""), settings.get_value("app_secret", ""));
 					dropbox.set_accessTokenSecret(_access_token_secret);
 					dropbox.set_accessToken(_access_token);
 				}
@@ -144,7 +150,8 @@
 								<p>Last sync: <span id="last_sync_date"><span></p>
 								<p>&nbsp;</p>
 								<div class="alert-actions">
-									<a href="#" onclick="sync_now();" class="btn small">Sync now</a>
+									<a href="#" onclick="download_bookmarks();" class="btn small">download</a>
+									<a href="#" onclick="upload_bookmarks();" class="btn small">upload</a>
 								</div>
 							</div>
 						</form>

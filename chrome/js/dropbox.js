@@ -49,9 +49,10 @@ var dropbox = {
 		);
 	},
 
-	getInfo: function() {
+	getInfo: function(callback) {
 		this._request("/account/info", {
 				method : "GET",
+				successCallback : callback,
 				success: function(data) {
 					console.log("account info", data);
 				},
@@ -62,14 +63,13 @@ var dropbox = {
 		);
 	},
 	
-	sendFile : function(file_name, fileEntry, blob) {	
+	sendFile : function(file_name, fileEntry) {	
 		dropbox._request("/files/dropbox/public", {
 			method : "POST",
 			type : "file",
 			subdomain : 'api-content'}, 
 			{
 				file_name : file_name,
-				body : blob,
 				file : fileEntry
 			}
 		);
@@ -147,7 +147,12 @@ var dropbox = {
 				method: params.method,
 				url: url,
 				data: OAuth.getParameterMap(message.parameters),
-				success: params.success,
+				success: function(data) {
+					params.success(data);
+					if(params.successCallback) {
+						params.successCallback(data);
+					}
+				},
 				error: params.error
 			});
 		}
