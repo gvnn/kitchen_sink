@@ -1,8 +1,11 @@
 kitchen_sink
 A (very) basic bookmark sync extension on dropbox.
 
+v0.2
+Changed auth methods to real oauth and changed dropbox api version from 0 to 1
+
 v0.1
-This version includes only an extension for chrome, other browsers will come.
+First basic version
 
 License
 Do What The Fuck You Want To Public License, Version 2.
