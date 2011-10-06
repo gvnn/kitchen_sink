@@ -5,35 +5,22 @@
 		<title>kitchen_sink options</title>
 		<link rel="stylesheet" type="text/css" href="gui/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" href="gui/css/kitchen_sink.css">
-		<script src="js/jquery-1.6.4.min.js"></script>
-		<script src="js/oauth.js"></script>
-		<script src="js/sha1.js"></script>
-		<script src="js/dropbox.js"></script>
-		<script src="js/settings.js"></script>
-		<!-- <script type="text/javascript" src="js/chrome_ex_oauthsimple.js"></script>
-		<script type="text/javascript" src="js/chrome_ex_oauth.js"></script> -->
-		<script src="js/sync.js"></script>
+		<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="js/sha1.js"></script>
+		<script type="text/javascript" src="js/oauth.js"></script>
+		<script type="text/javascript" src="js/dropbox.js"></script>
+		<script type="text/javascript" src="js/settings.js"></script>
+		<script type="text/javascript" src="js/sync.js"></script>
 		<script>
 			function get_token() {
-
 				var app_key = $("#app_key").val(),
-					app_secret = $("#app_secret").val(),
-					email = $("#email").val(),
-					password = $("#password").val();
-				
+					app_secret = $("#app_secret").val();
+				//saving settings
 				settings.set_value("app_key", app_key);
 				settings.set_value("app_secret", app_secret);
-				settings.set_value("email", email);
-				
-				dropbox.setup(app_key, app_secret);
-				dropbox.authenticate(email, password, function() {
-					if(dropbox.accessToken() != "" &&  dropbox.accessTokenSecret() != "") {
-						//saves the token
-						settings.set_value("access_token", dropbox.accessToken());
-						settings.set_value("access_token_secret", dropbox.accessTokenSecret());
-						switch_form("connected");
-					}
-				});
+				//request access token
+				dropbox.setup(settings.get_value("app_key", ""), settings.get_value("app_secret", ""));
+				dropbox.authenticate();
 			}
 			
 			function remove_token() {
@@ -69,30 +56,37 @@
 			}
 			
 			$(document).ready(function() {
-				//check if user aldready set the token
-				_access_token = settings.get_value("access_token", "");
-				_access_token_secret = settings.get_value("access_token_secret", "");			
-				$("#app_key").val(settings.get_value("app_key", ""));
-				$("#app_secret").val(settings.get_value("app_secret", ""));
-				$("#email").val(settings.get_value("email", ""));
-				
-				_last_sync = settings.get_value("last_sync_date", "");
-				if(_last_sync != "") {
-					$("#sync_container").addClass("info");
-					$("#last_sync_date").text(_last_sync);
+				//get value from extension storage
+				var app_key = settings.get_value("app_key", "");
+				var app_secret = settings.get_value("app_secret", "");
+				//set textboxes with app details
+				$("#app_key").val(app_key)
+				$("#app_secret").val(app_secret);
+				if(app_key != "" && app_secret != "") {					
+					//set up dropbox
+					dropbox.setup(app_key, app_secret);
+					if(dropbox.accessToken() == "" || dropbox.accessTokenSecret() == "" ) {
+						switch_form("disconnected");	
+					} else {
+						//check if it is from dropbox
+						_qs = dropbox._parse_querystring(window.location.search.substr(1).split('&'));
+						if(_qs.oauth_token) {
+							//request access token
+							dropbox.get_access_token(_qs['oauth_token']);						
+						}
+						_last_sync = settings.get_value("last_sync_date", "");
+						if(_last_sync != "") {
+							$("#sync_container").addClass("info");
+							$("#last_sync_date").text(_last_sync);
+						} else {
+							$("#sync_container").addClass("warning");
+							$("#last_sync_date").text("no date found");
+						}
+						switch_form("connected");
+					}
 				} else {
-					$("#sync_container").addClass("warning");
-					$("#last_sync_date").text("no date found");
-				}
-				
-				if(_access_token == "" || _access_token_secret == "" ) {
-					switch_form("disconnected");	
-				} else {
-					switch_form("connected");
-					dropbox.setup(settings.get_value("app_key", ""), settings.get_value("app_secret", ""));
-					dropbox.set_accessTokenSecret(_access_token_secret);
-					dropbox.set_accessToken(_access_token);
-				}
+					switch_form("disconnected");
+				}				
 			});
 		</script>
 	</head>
@@ -117,19 +111,6 @@
 									<label for="app_secret">App secret</label>
 									<div class="input">
 										<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
-									</div>
-								</div>
-								<div class="clearfix">
-									<label for="email">Email</label>
-									<div class="input">
-										<input class="xlarge" id="email" name="email" size="30" type="text">
-									</div>
-								</div>
-								<div class="clearfix">
-									<label for="password">Password</label>
-									<div class="input">
-										<input class="xlarge" id="password" name="password" size="30" type="password">
-										(not saved)
 									</div>
 								</div>
 							</fieldset>

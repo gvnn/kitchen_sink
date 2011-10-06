@@ -4,21 +4,73 @@ var dropbox = {
 		this._consumerKey = consumerKey;
 		this._consumerSecret = consumerSecret;
 		this._requestCounter = $.now();
+		this._request_token_url = "/oauth/request_token";
+		this._authorize_url = "/oauth/authorize";
+		this._access_token_url = "/oauth/access_token";
+	},
+	
+	_parse_querystring : function(a) {
+		if (a == "") return {};
+		var b = {};
+		for (var i = 0; i < a.length; ++i)
+		{
+			var p=a[i].split('=');
+			if (p.length != 2) continue;
+			b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+		}
+		return b;
+	},
+	
+	authenticate : function() {
+		this._request(this._request_token_url, {
+			method : "GET",
+			sendAuth: false,
+			dataType: "text",
+			success: function(data) {
+				res = dropbox._parse_querystring(data.split('&'));
+				dropbox.set_accessTokenSecret(res['oauth_token_secret']);
+				dropbox.set_accessToken(res['oauth_token']);
+				//redirect to authentication
+				url = dropbox._stringify(
+					OAuth.getParameterMap({
+						oauth_consumer_key: dropbox._consumerKey,
+						oauth_token : dropbox.accessToken(),
+						oauth_callback : chrome.extension.getURL("options.html")
+					}));
+				top.window.location.href = 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url;
+			}
+		});
+	},
+	
+	get_access_token : function() {
+		this._request(this._access_token_url, {
+			method : "GET",
+			sendAuth: true,
+			dataType: "text",
+			success: function(data) {
+				res = dropbox._parse_querystring(data.split('&'));
+				dropbox.set_accessTokenSecret(res['oauth_token_secret']);
+				dropbox.set_accessToken(res['oauth_token']);
+				chrome.extension.getBackgroundPage().dropbox = dropbox;
+			}
+		});
 	},
   
 	accessToken : function() {
-		return this._accessToken;
+		return settings.get_value("access_token", this._accessToken);
 	},
   
 	accessTokenSecret : function() {
-		return this._accessTokenSecret;
+		return settings.get_value("access_token_secret", this._accessTokenSecret);
 	},
   
 	set_accessTokenSecret : function(value) {
 		this._accessTokenSecret = value;
+		settings.set_value("access_token_secret", value);
 	},
   
 	set_accessToken : function(value) {
+		settings.set_value("access_token", value);
 		this._accessToken = value;
 	},
 	
@@ -26,29 +78,6 @@ var dropbox = {
 		this._fs = value;
 	},
 	
-	authenticate: function(email, password, callback) {
-		var that = this;
-		this._request("/token", {
-				method : "GET",
-				sendAuth: false,
-				success: function(data) {
-					console.log("authentication response", data);
-					that._accessToken = data.token;
-					that._accessTokenSecret = data.secret;
-					if (callback) {
-						callback();
-					}
-				},
-				error: function() {
-					console.error("authentication error", arguments);
-				}
-			}, {
-				email: email,
-				password: password
-			}
-		);
-	},
-
 	getInfo: function(callback) {
 		this._request("/account/info", {
 				method : "GET",
@@ -87,14 +116,15 @@ var dropbox = {
 	_request: function(path, params, data) {
 		params = $.extend({}, {
 			subdomain: "api",
-			apiVersion: "0",
+			apiVersion: "1",
 			sendAuth: true,
 			success: $.noop,
 			error: $.noop,
-			type: 'none'
+			type: 'none',
+			dataType: "json"
 		}, params || {});
 
-		if (params.sendAuth && !this._accessToken) {
+		if (params.sendAuth && !this.accessToken()) {
 			throw "Authenticated method called before authenticating";
 		}
 
@@ -118,7 +148,7 @@ var dropbox = {
 		}
 
 		if (params.sendAuth) {
-			message.parameters.oauth_token = this._accessToken;
+			message.parameters.oauth_token = this.accessToken();
 		}
 
 		var oauthBits = {
@@ -126,7 +156,7 @@ var dropbox = {
 		};
 
 		if (params.sendAuth) {
-			oauthBits.tokenSecret = this._accessTokenSecret;
+			oauthBits.tokenSecret = this.accessTokenSecret();
 		}
 
 		OAuth.setTimestampAndNonce(message);
@@ -140,10 +170,11 @@ var dropbox = {
 				var req = new XMLHttpRequest();
 				req.open("POST", url + '?' + _query_string);
 				req.send(formdata);
+				chrome.extension.getBackgroundPage().message('Upload complete');
 			}, sync._fs_error_handler);
 		} else {
 			$.ajax({
-				dataType: "json",
+				dataType: params.dataType,
 				method: params.method,
 				url: url,
 				data: OAuth.getParameterMap(message.parameters),

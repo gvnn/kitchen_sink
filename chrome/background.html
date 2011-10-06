@@ -1,3 +1,46 @@
-<!--
-the background page monitors changes in bookmarks and pushes a new version on dropbox
--->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="js/sha1.js"></script>
+		<script type="text/javascript" src="js/oauth.js"></script>
+		<script type="text/javascript" src="js/dropbox.js"></script>
+		<script type="text/javascript" src="js/settings.js"></script>
+		<script type="text/javascript" src="js/sync.js"></script>
+		<script>
+			function message(text) {
+				_notification = webkitNotifications.createNotification(
+					'gui/img/icon.png',	
+					'kitchan_sync',
+					text
+					);
+				_notification.show();
+				setTimeout(function() {
+					_notification.cancel();
+				}, 3000);
+			}
+			
+			$(document).ready(function() {
+				//get value from extension storage
+				var app_key = settings.get_value("app_key", "");
+				var app_secret = settings.get_value("app_secret", "");
+				//set textboxes with app details
+				$("#app_key").val(app_key)
+				$("#app_secret").val(app_secret);
+				if(app_key != "" && app_secret != "") {					
+					//set up dropbox
+					dropbox.setup(app_key, app_secret);
+					if(dropbox.accessToken() != "" || dropbox.accessTokenSecret() != "" ) {
+						console.log("already connected");
+					} else {
+						dropbox = null;
+					}
+				} else {
+					dropbox = null;
+				}
+			});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

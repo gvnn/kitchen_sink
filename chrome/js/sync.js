@@ -55,6 +55,7 @@ var sync = {
 				}
 			};
 		});
+		chrome.extension.getBackgroundPage().message('Download complete');
 	},
 	
 	_on_init_fs : function(fs) {
