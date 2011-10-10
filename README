@@ -7,8 +7,7 @@ Changed auth methods to real oauth and changed dropbox api version from 0 to 1
 v0.1
 First basic version
 
-License
-Do What The Fuck You Want To Public License, Version 2.
+License: Do What The Fuck You Want To Public License, Version 2.
 
 In Chrome:
 
@@ -20,7 +19,7 @@ In Chrome:
 	
 	More info at http://code.google.com/chrome/extensions/getstarted.html
 
-In Firefox
+In Firefox:
 
 	- install the add-on SDK
 	  https://addons.mozilla.org/en-US/developers/docs/sdk/1.1/dev-guide/addon-development/installation.html
@@ -30,9 +29,9 @@ In Firefox
 On Dropbox:
 
 	- copy the browser.html file in your dropbox folder, you can rename it if you like.
-	- serch for <userid> and replace it with your dropbox id.
+	- search for <userid> and replace it with your dropbox id.
 	
-	the tool is purely sperimental, that's reason why you have to create a dropbox application
+	the tool is purely experimental, that's reason why you have to create a dropbox application
 	https://www.dropbox.com/developers/apps
 
 Credits:
