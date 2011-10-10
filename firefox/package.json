@@ -1,9 +1,9 @@
 {
-    "name": "firefox", 
-    "license": "MPL 1.1/GPL 2.0/LGPL 2.1", 
-    "author": "", 
+    "name": "kitchen_sink",
+    "license": "Do What The Fuck You Want To Public License, Version 2", 
+    "author": "gvnn", 
     "version": "0.1", 
-    "fullName": "firefox", 
+    "fullName": "kitchen_sink", 
     "id": "jid1-y4uZ3ayw5En8FA", 
-    "description": "a basic add-on"
+    "description": "A (very) basic bookmark sync extension on dropbox."
 }
