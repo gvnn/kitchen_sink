@@ -3,18 +3,25 @@ const data = require("self").data;
 const simpleStorage = require("simple-storage").storage;
 const tabs = require("tabs");
 
-var optionsPanel = require("panel").Panel({
+var menuPanel = require("panel").Panel({
 	width: 220,
 	height: 110,
 	contentURL: data.url("menu.html"),
 	contentScriptFile: [data.url("js/jquery-1.6.4.min.js"), data.url("menu.js")]
 });
 
-optionsPanel.port.on("options_click", function() {
+var optionPanel = require("panel").Panel({
+	width: 900,
+	height: 400,
+	contentURL: data.url("options.html"),
+	contentScriptFile: [data.url("js/jquery-1.6.4.min.js"), data.url("options.js")]
+});
+
+menuPanel.port.on("options_click", function() {
 	open_options();
 });
 
-optionsPanel.port.on("upload_click", function() {
+menuPanel.port.on("upload_click", function() {
 	if(simpleStorage.app_key && simpleStorage.app_secret) {
 		//start upload
 	} else {
@@ -23,7 +30,7 @@ optionsPanel.port.on("upload_click", function() {
 	}
 });
 
-optionsPanel.port.on("download_click", function() {
+menuPanel.port.on("download_click", function() {
 	if(simpleStorage.app_key && simpleStorage.app_secret) {
 		//start download
 	} else {
@@ -32,21 +39,25 @@ optionsPanel.port.on("download_click", function() {
 	}
 });
 
+optionPanel.port.on("save_key_secret", function(config) {
+	simpleStorage.app_key = config['key'];
+	simpleStorage.app_secret = config['secret'];
+	optionPanel.port.emit('switch_form', 'connected');
+});
+
+optionPanel.port.on("check_status", function() {
+	//check if app_key & app_secret are present
+	optionPanel.port.emit('switch_form', (simpleStorage.app_key && simpleStorage.app_secret) ? 'connected' : 'disconnected');
+});
+
 //opens the options page
 var open_options = function() {
-	tabs.open({
-		url: data.url("options.html"),
-		onReady: function onReady(tab) {
-			tab.attach({
-				contentScriptFile: [data.url("js/jquery-1.6.4.min.js"), data.url("options.js")]
-			});
-		}
-	});
+	optionPanel.show();
 }
 
 var widget = widgets.Widget({
 	id: "options-link",
 	label: "kitchen_sink",
-	panel: optionsPanel,
+	panel: menuPanel,
 	contentURL: data.url("gui/img/icon.png")
 });

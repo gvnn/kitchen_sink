@@ -20,10 +20,20 @@ In Chrome:
 	
 	More info at http://code.google.com/chrome/extensions/getstarted.html
 
+In Firefox
+
+	- install the add-on SDK
+	  https://addons.mozilla.org/en-US/developers/docs/sdk/1.1/dev-guide/addon-development/installation.html
+	- build the xpi: (addon-sdk-1.1)~/mozilla/addon-sdk-1.1 > cfx xpi
+	- import the xpi in Firefox
+	
 On Dropbox:
 
 	- copy the browser.html file in your dropbox folder, you can rename it if you like.
 	- serch for <userid> and replace it with your dropbox id.
+	
+	the tool is purely sperimental, that's reason why you have to create a dropbox application
+	https://www.dropbox.com/developers/apps
 
 Credits:
 
@@ -33,3 +43,4 @@ Credits:
 	- JavaScript OAuth library by John Kristian (http://code.google.com/p/oauth/).
 	- SHA1.js by Paul Johnston (http://pajhome.org.uk/crypt/md5/).
 	- dropbox-js by Ben Cherry (https://github.com/bcherry/dropbox-js).
+	- Adapt.js (http://adapt.960.gs/)
