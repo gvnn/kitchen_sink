@@ -45,6 +45,12 @@ optionPanel.port.on("save_key_secret", function(config) {
 	optionPanel.port.emit('switch_form', 'connected');
 });
 
+optionPanel.port.on("delete_key_secret", function(config) {
+	simpleStorage.app_key = null;
+	simpleStorage.app_secret = null;
+	optionPanel.port.emit('switch_form', 'disconnected');
+});
+
 optionPanel.port.on("check_status", function() {
 	//check if app_key & app_secret are present
 	optionPanel.port.emit('switch_form', (simpleStorage.app_key && simpleStorage.app_secret) ? 'connected' : 'disconnected');
