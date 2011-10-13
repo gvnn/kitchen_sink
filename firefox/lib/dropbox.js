@@ -1,4 +1,5 @@
 const simpleStorage = require("simple-storage").storage;
+var windows = require("windows").browserWindows;
 
 var dropbox = {
 
@@ -13,12 +14,36 @@ var dropbox = {
 		this._oauth = require('oauth').OAuth;
 	},
 	
-	authenticate : function() {		
+	authenticate : function() {
 		console.log('opening connection: ' + this._request_token_url);
 		this._request(this._request_token_url, {
 			method : "POST",
 			sendAuth: false,
-			dataType: "text"
+			dataType: "text",
+			success : function(data) {
+				console.log("account info", data.text);
+				res = dropbox._parse_querystring(data.text.split('&'));
+				dropbox.set_accessTokenSecret(res['oauth_token_secret']);
+				dropbox.set_accessToken(res['oauth_token']);
+				
+				//redirect to authentication
+				url = dropbox._stringify(
+					dropbox._oauth.getParameterMap({
+						oauth_consumer_key: dropbox._consumerKey,
+						oauth_token : dropbox.accessToken(),
+						oauth_callback : require("self").data.url('options.html')
+					}));
+				
+				console.log("redirecting to:", 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url);
+				for each (var tab in windows.activeWindow.tabs) {
+					if(require("self").data.url('options.html') == tab.url) {
+						tab.url = 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url;
+					}
+				}
+			},
+			error: function(data) {
+				console.log("account info error", data.text);
+			}
 		});
 	},
 	
@@ -58,6 +83,18 @@ var dropbox = {
 			}
 		}
 		return target;
+	},
+	
+	_parse_querystring : function(a) {
+		if (a == "") return {};
+		var b = {};
+		for (var i = 0; i < a.length; ++i)
+		{
+			var p=a[i].split('=');
+			if (p.length != 2) continue;
+			b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+		}
+		return b;
 	},
 	
 	_request: function(path, params, data) {
@@ -112,7 +149,16 @@ var dropbox = {
 			url: message.action,
 			content: this._stringify(this._oauth.getParameterMap(message.parameters)),
 			onComplete: function (response) {
-				console.log(response.text);
+				//check status code
+				console.log(response.status);
+				switch(parseInt(response.status)) {
+					case 200:
+						params.success(response);
+						break;
+					default:
+						params.error(response);
+						break;
+				}
 			}
 		});
 		
