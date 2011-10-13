@@ -3,55 +3,26 @@
 	<head>
 		<meta charset="utf-8">
 		<title>kitchen_sink options</title>
-		<link rel="stylesheet" type="text/css" href="gui/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="gui/css/kitchen_sink.css">
 	</head>
 	<body>
-		<div class="container">
-			<div class="content">
-				<div class="page-header">
-					<h1>kitchen_sink <small>options</small></h1>
-				</div>
-				<div class="row">
-					<div class="span14">
-						<h3>Dropbox Settings</h3>
-						<form id="connection_form">
-							<fieldset>
-								<div class="clearfix">
-									<label for="app_key">App key</label>
-									<div class="input">
-										<input class="xlarge" id="app_key" name="app_key" size="30" type="text">
-									</div>
-								</div>
-								<div class="clearfix">
-									<label for="app_secret">App secret</label>
-									<div class="input">
-										<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
-									</div>
-								</div>
-							</fieldset>
-							<div class="actions">
-								<input type="button" id="btn_get_token" class="btn primary" value="Get token">
-							</div>
-						</form>
-						<form id="connected_form">
-							<div class="alert-message block-message success">
-								<p>Your account is connected with Dropbox.</p>
-								<div class="alert-actions">
-									<a class="btn small" id="btn_remove_connection" href="#">Remove connection</a>
-								</div>
-							</div>
-							<h3>Sync</h3>						
-							<div id="sync_container" class="alert-message block-message">
-								<div class="alert-actions">
-									<a href="#" id="btn_download" class="btn small">download</a>
-									<a href="#" id="btn_upload" class="btn small">upload</a>
-								</div>
-							</div>
-						</form>
+		<form id="connection_form">
+			<fieldset>
+				<div class="clearfix">
+					<label for="app_key">App key</label>
+					<div class="input">
+						<input class="xlarge" id="app_key" name="app_key" size="30" type="text">
 					</div>
 				</div>
+				<div class="clearfix">
+					<label for="app_secret">App secret</label>
+					<div class="input">
+						<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
+					</div>
+				</div>
+			</fieldset>
+			<div class="actions">
+				<input type="button" id="btn_get_token" class="btn primary" value="Get token">
 			</div>
-		</div>
+		</form>
 	</body>
 </html>

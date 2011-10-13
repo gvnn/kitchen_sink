@@ -1,44 +1,16 @@
-self.port.on("switch_form", function(status) {
-	swich_status(status);
+$(document).ready(function(){
+	$("#btn_get_token").click(function() {
+		self.port.emit('save_settings', {
+			'app_key' : $("#app_key").val(),
+			'app_secret' : $("#app_secret").val()
+		});
+		self.port.emit('get_token');
+	});
 });
 
-var swich_status = function(status) {
-	switch(status) {
-		case "connected":
-			$("#connected_form").show();
-			$("#connection_form").hide();
-			$("#password").val("");
-			break;
-		case "disconnected":
-			$("#connected_form").hide();
-			$("#connection_form").show();
-			break;
-	}
-}
-
-var get_token = function() {
-	var app_key = $("#app_key").val(),
-		app_secret = $("#app_secret").val();
-	//saving settings
-	self.port.emit('save_key_secret', { 'key' : app_key, 'secret' : app_secret });
-}
-
-var remove_connection = function() {
-	self.port.emit('delete_key_secret');
-}
-
-var download_bookmarks = function() {
-	
-}
-
-var upload_bookmarks = function() {
-	
-}
-
-$(document).ready(function() {
-	self.port.emit('check_status');
-	$("#btn_get_token").click(get_token);
-	$("#btn_remove_connection").click(remove_connection);
-	$("#btn_download").click(download_bookmarks);
-	$("#btn_upload").click(upload_bookmarks);
+//get current settings
+self.port.emit('get_settings');
+self.port.on('set_settings', function onMessage(settings) {
+	$("#app_key").val(settings.app_key);
+	$("#app_secret").val(settings.app_secret);
 });
