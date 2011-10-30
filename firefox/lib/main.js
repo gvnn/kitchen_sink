@@ -55,10 +55,12 @@ var pageMod = require("page-mod").PageMod({
 		
 		worker.port.on("download_bookmarks", function() {
 			console.log('download bookmarks');
+			dropbox.download();
 		});
 		
 		worker.port.on("upload_bookmarks", function() {
 			console.log('upload bookmarks');
+			dropbox.upload();
 		});
 	}
 });
