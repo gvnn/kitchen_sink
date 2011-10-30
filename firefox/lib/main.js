@@ -14,7 +14,7 @@ if(!simpleStorage.settings){
 widgets.Widget({
 	id: "kitchen_skin_widget",
 	label: "kitchen_skin",
-	contentURL: "http://www.google.com/favicon.ico",
+	contentURL: data.url('gui/img/icon.png'),
 	onClick: function() {
 		require("tabs").open(data.url("options.html"));
 	}
@@ -42,15 +42,23 @@ var pageMod = require("page-mod").PageMod({
 			console.log('dropbox set up');
 			dropbox.authenticate();
 		});
-
-		/*
-		var output = '';
-		for (property in worker) {
-		  output += property + ': ' + worker[property]+'; ';
-		}
-		console.log(output);
-		worker.port.on('connected', function(message) {
-			console.log('connected :' + message);
-		});*/
+		
+		worker.port.on("get_access_token", function() {
+			console.log('get access token and secret');
+			dropbox.get_access_token();
+		});
+		
+		worker.port.on("remove_token", function() {
+			console.log('remove token');
+			dropbox.remove_token();
+		});
+		
+		worker.port.on("download_bookmarks", function() {
+			console.log('download bookmarks');
+		});
+		
+		worker.port.on("upload_bookmarks", function() {
+			console.log('upload bookmarks');
+		});
 	}
 });

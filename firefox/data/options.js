@@ -6,6 +6,23 @@ $(document).ready(function(){
 		});
 		self.port.emit('get_token');
 	});
+	
+	$("#btn_get_access").click(function() {
+		self.port.emit('get_access_token');
+	});
+	
+	$("#lnk_remove_connection").click(function() {
+		self.port.emit('remove_token');
+	});
+	
+	$("#lnk_download").click(function() {
+		self.port.emit('download_bookmarks');
+	});
+	
+	$("#lnk_upload").click(function() {
+		self.port.emit('upload_bookmarks');
+	});
+	
 });
 
 //get current settings

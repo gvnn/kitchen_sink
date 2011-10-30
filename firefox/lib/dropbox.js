@@ -1,5 +1,6 @@
 const simpleStorage = require("simple-storage").storage;
 var windows = require("windows").browserWindows;
+var tabs = require("tabs");
 
 var dropbox = {
 
@@ -30,19 +31,30 @@ var dropbox = {
 				url = dropbox._stringify(
 					dropbox._oauth.getParameterMap({
 						oauth_consumer_key: dropbox._consumerKey,
-						oauth_token : dropbox.accessToken(),
-						oauth_callback : require("self").data.url('options.html')
+						oauth_token : dropbox.accessToken() 
+						//no callback, firefox doesn't like redirects to resource://
+						//oauth_callback : require("self").data.url('options.html') 
 					}));
 				
-				console.log("redirecting to:", 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url);
-				for each (var tab in windows.activeWindow.tabs) {
-					if(require("self").data.url('options.html') == tab.url) {
-						tab.url = 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url;
-					}
-				}
+				console.log("open tab to:", 'https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url);
+				tabs.open('https://www.dropbox.com/1' + dropbox._authorize_url + '?' + url);
 			},
 			error: function(data) {
 				console.log("account info error", data.text);
+			}
+		});
+	},
+	
+	get_access_token : function() {
+		this._request(this._access_token_url, {
+			method : "GET",
+			sendAuth: true,
+			dataType: "text",
+			success: function(data) {
+				console.log("get_access_token response: ", data.text);
+				res = dropbox._parse_querystring(data.text.split('&'));
+				dropbox.set_accessTokenSecret(res['oauth_token_secret']);
+				dropbox.set_accessToken(res['oauth_token']);
 			}
 		});
 	},
