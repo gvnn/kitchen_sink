@@ -31,3 +31,17 @@ self.port.on('set_settings', function onMessage(settings) {
 	$("#app_key").val(settings.app_key);
 	$("#app_secret").val(settings.app_secret);
 });
+
+self.port.on('set_status', function onMessage(status) {
+	switch(status) {
+		case "connected":
+			$("#connected_form").show();
+			$("#connection_form").hide();
+			$("#password").val("");
+			break;
+		case "disconnected":
+			$("#connected_form").hide();
+			$("#connection_form").show();
+			break;
+	}
+});

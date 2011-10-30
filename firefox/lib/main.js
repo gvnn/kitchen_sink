@@ -26,6 +26,25 @@ var pageMod = require("page-mod").PageMod({
 	contentScriptWhen: 'ready',
 	contentScriptFile: [data.url('js/jquery-1.6.4.min.js'), data.url('options.js')],
 	onAttach: function(worker) {
+		
+		//get value from extension storage
+		var app_key = simpleStorage.settings['app_key'];
+		var app_secret = simpleStorage.settings['app_secret'];
+		
+		console.log("app_key: " + app_key);
+		console.log("app_secret: " + app_secret);
+		if(app_key != "" && app_secret != "") {
+			dropbox.setup(simpleStorage.settings['app_key'], simpleStorage.settings['app_secret']);
+			console.log("accessToken: " + dropbox.accessToken());
+			console.log("accessTokenSecret: " + dropbox.accessTokenSecret());
+			if(dropbox.accessToken() == "" || dropbox.accessTokenSecret() == "" ) {
+				worker.port.emit("set_status", 'disconnected');
+			} else {
+				worker.port.emit("set_status", 'connected');
+			}
+		} else {
+			worker.port.emit("set_status", 'disconnected');
+		}
 	
 		worker.port.on("get_settings", function(msg) {
 			worker.port.emit("set_settings", simpleStorage.settings);
@@ -38,19 +57,18 @@ var pageMod = require("page-mod").PageMod({
 		});
 		
 		worker.port.on("get_token", function() {
-			dropbox.setup(simpleStorage.settings['app_key'], simpleStorage.settings['app_secret']);
 			console.log('dropbox set up');
 			dropbox.authenticate();
 		});
 		
 		worker.port.on("get_access_token", function() {
 			console.log('get access token and secret');
-			dropbox.get_access_token();
+			dropbox.get_access_token(worker);
 		});
 		
 		worker.port.on("remove_token", function() {
 			console.log('remove token');
-			dropbox.remove_token();
+			dropbox.remove_token(worker);
 		});
 		
 		worker.port.on("download_bookmarks", function() {

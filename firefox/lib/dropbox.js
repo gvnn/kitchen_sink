@@ -46,7 +46,7 @@ var dropbox = {
 		});
 	},
 	
-	get_access_token : function() {
+	get_access_token : function(worker) {
 		this._request(this._access_token_url, {
 			method : "GET",
 			sendAuth: true,
@@ -57,13 +57,17 @@ var dropbox = {
 				dropbox.set_accessTokenSecret(res['oauth_token_secret']);
 				dropbox.set_accessToken(res['oauth_token']);
 				dropbox.set_userid(res['uid']);
+				//emit status change
+				worker.port.emit("set_status", 'connected');
 			}
 		});
 	},
 	
-	remove_token : function() {
+	remove_token : function(worker) {
 		this.set_accessTokenSecret("access_token", "");
 		this.set_accessToken("access_token_secret", "");
+		console.log("disconnected");
+		worker.port.emit("set_status", 'disconnected');
 	},
 	
 	download : function() {
@@ -81,11 +85,11 @@ var dropbox = {
 	},
 	
 	accessToken : function() {
-		return simpleStorage.settings['access_token'];
+		return simpleStorage.settings['access_token'] == null ? "" : simpleStorage.settings['access_token'];
 	},
   
 	accessTokenSecret : function() {
-		return simpleStorage.settings['access_token_secret'];
+		return simpleStorage.settings['access_token_secret'] == null ? "" : simpleStorage.settings['access_token_secret'];
 	},
 	
 	userid : function() {
