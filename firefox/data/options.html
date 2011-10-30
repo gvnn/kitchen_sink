@@ -3,34 +3,60 @@
 	<head>
 		<meta charset="utf-8">
 		<title>kitchen_sink options</title>
+		<link rel="stylesheet" type="text/css" href="gui/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="gui/css/kitchen_sink.css">
 	</head>
 	<body>
-		<form id="connection_form">
-			<fieldset>
-				<div class="clearfix">
-					<label for="app_key">App key</label>
-					<div class="input">
-						<input class="xlarge" id="app_key" name="app_key" size="30" type="text">
+		<div class="container">
+			<div class="content">
+				<div class="page-header">
+					<h1>kitchen_sink <small>options</small></h1>
+				</div>
+				<div class="row">
+					<div class="span14">
+						<h3>Dropbox Settings</h3>
+						<form id="connection_form">
+							<fieldset>
+								<div class="clearfix">
+									<label for="app_key">App key</label>
+									<div class="input">
+										<input class="xlarge" id="app_key" name="app_key" size="30" type="text">
+									</div>
+								</div>
+								<div class="clearfix">
+									<label for="app_secret">App secret</label>
+									<div class="input">
+										<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
+									</div>
+								</div>
+							</fieldset>
+							<div class="actions">
+								<input type="button" id="btn_get_token" class="btn primary" value="Request Token">
+								<input type="button" id="btn_get_access" class="btn success" value="Get Access Token">
+							</div>
+						</form>
+						<form id="connected_form">
+							<div class="alert-message block-message success">
+								<p>Your account is connected with Dropbox.</p>
+								<p>&nbsp;</p>
+								<div class="alert-actions">
+									<a href="#" class="btn small" id="lnk_remove_connection">Remove connection</a>
+								</div>
+							</div>
+							<h3>Sync</h3>						
+							<div id="sync_container" class="alert-message block-message">
+								<div class="alert-actions">
+									<a href="#" id="lnk_download" class="btn small">download</a>
+									<a href="#" id="lnk_upload" class="btn small">upload</a>
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
-				<div class="clearfix">
-					<label for="app_secret">App secret</label>
-					<div class="input">
-						<input class="xlarge" id="app_secret" name="app_secret" size="30" type="text">
-					</div>
-				</div>
-			</fieldset>
-			<div class="actions">
-				<input type="button" id="btn_get_token" class="btn primary" value="Get token">
-				<input type="button" id="btn_get_access" class="btn primary" value="Get access">
-			</div>	
-			<div class="alert-actions">
-				<a href="#" class="btn small" id="lnk_remove_connection">Remove connection</a>
-			</div>	
-			<div class="alert-actions">
-				<a href="#" id="lnk_download" class="btn small">download</a>
-				<a href="#" id="lnk_upload" class="btn small">upload</a>
 			</div>
-		</form>
+			<footer>
+				<p>Code by <a target="_blank" href="http://www.gvnn.it">Gvnn</a> - kitchen_sink on <a target="_blank" href="https://github.com/gvnn/kitchen_sink">GitHub</a></p>
+			</footer>
+		</div>
 	</body>
 </html>
