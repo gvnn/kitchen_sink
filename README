@@ -1,6 +1,10 @@
 kitchen_sink
 A (very) basic bookmark sync extension on dropbox.
 
+v0.3
+Added Firefox support. 
+This is the final version, unless it doesn't become a planetary success I'm not going to add any new functionality.
+
 v0.2
 Changed auth methods to real oauth and changed dropbox api version from 0 to 1
 
@@ -31,7 +35,7 @@ On Dropbox:
 	- copy the browser.html file in your dropbox folder, you can rename it if you like.
 	- search for <userid> and replace it with your dropbox id.
 	
-	the tool is purely experimental, that's reason why you have to create a dropbox application
+	the tool is purely experimental, that's the reason why you have to create a dropbox application
 	https://www.dropbox.com/developers/apps
 
 Credits:

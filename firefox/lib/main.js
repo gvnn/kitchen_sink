@@ -7,8 +7,8 @@ const simpleStorage = require("simple-storage").storage;
 //Default Settings
 if(!simpleStorage.settings){
 	simpleStorage.settings = {};
-	simpleStorage.settings['app_key'] = "rlrk2f0e3fma1xg";
-	simpleStorage.settings['app_secret'] = "8przfsgj66amg5h";
+	simpleStorage.settings['app_key'] = "";
+	simpleStorage.settings['app_secret'] = "";
 }
 
 widgets.Widget({
