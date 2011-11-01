@@ -2,7 +2,7 @@ kitchen_sink
 A (very) basic bookmark sync extension on dropbox.
 
 v0.3.1
-This is the final version, unless it doesn't become a planetary success I'm not going to add any new functionality.
+This is the final version, unless it becomes a planetary success I'm not going to add any new functionality.
 
 v0.3
 Added Firefox support. 
